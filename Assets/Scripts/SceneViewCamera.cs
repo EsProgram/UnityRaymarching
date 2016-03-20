@@ -6,6 +6,9 @@
 [RequireComponent(typeof(Camera))]
 public class SceneViewCamera : MonoBehaviour
 {
+  [SerializeField, Tooltip("左シフトを押している時のみマウス操作を可能にする")]
+  private bool requireLeftShiftDown;
+
   [SerializeField, Range(0.1f, 10f)]
   private float wheelSpeed = 1f;
 
@@ -19,6 +22,9 @@ public class SceneViewCamera : MonoBehaviour
 
   private void Update()
   {
+    if(requireLeftShiftDown && !Input.GetKey(KeyCode.LeftShift))
+      return;
+
     MouseUpdate();
     return;
   }
