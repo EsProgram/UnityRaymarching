@@ -43,10 +43,10 @@ float3 compute_ray_dir(float4 screen)
 //depthの算出方法はDirect3DとOpenGL系で違う。
 float compute_depth(float4 pos)
 {
-#if defined(SHADER_TARGET_GLSL)
-	return (pos.z / pos.w) * 0.5 + 0.5;
+#if UNITY_UV_STARTS_AT_TOP
+    return pos.z / pos.w;
 #else
-	return pos.z / pos.w;
+    return (pos.z / pos.w) * 0.5 + 0.5;   
 #endif
 }
 

@@ -9,6 +9,7 @@
 		Pass
 		{
 			Tags { "LightMode" = "Deferred" }
+			Cull Off
 			//G-Bufferへの描画はStencil を有効にして7bit目を立てる(128を足す)。
 			//Stencilの7bit目が立っていないピクセルはライティングされない。
 			//なので常にステンシルテストに合格させ、128で上書きする。
