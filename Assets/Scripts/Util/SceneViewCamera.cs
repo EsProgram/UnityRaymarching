@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+
+using UnityEngine;
 
 /// <summary>
 /// GameビューにてSceneビューのようなカメラの動きをマウス操作によって実現する
@@ -22,15 +24,15 @@ public class SceneViewCamera : MonoBehaviour
 
   private void Update()
   {
-    if(requireLeftShiftDown && !Input.GetKey(KeyCode.LeftShift))
-      return;
-
     MouseUpdate();
     return;
   }
 
   private void MouseUpdate()
   {
+    if(requireLeftShiftDown && !Input.GetKey(KeyCode.LeftShift))
+      return;
+
     float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
     if(scrollWheel != 0.0f)
       MouseWheel(scrollWheel);

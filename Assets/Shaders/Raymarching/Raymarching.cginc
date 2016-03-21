@@ -19,7 +19,6 @@ float  get_cam_visibl_len() { return _ProjectionParams.z - _ProjectionParams.y; 
 //カメラ -> レンダリングするピクセル
 float3 compute_ray_dir(float4 screen)
 {
-	//UV座標は左下(0,0)右上(1,1)
 	//UNITY_UV_START_AT_TOPはV値のトップ位置
 	//Direct3Dでは1、 OpenGL系では0
 #if UNITY_UV_STARTS_AT_TOP
@@ -27,7 +26,6 @@ float3 compute_ray_dir(float4 screen)
 	screen.y *= -1.0;
 #endif
 	//_ScreenParamsのxはレンダリングターゲットのピクセルの幅、yはピクセルの高さ
-	//アスペクト比を考慮して描画の潰れを防ぐ
 	screen.x *= _ScreenParams.x / _ScreenParams.y;
 
 	//カメラの情報とピクセル位置から カメラ -> ピクセル のレイの方向ベクトルを求める
@@ -44,9 +42,9 @@ float3 compute_ray_dir(float4 screen)
 float compute_depth(float4 pos)
 {
 #if UNITY_UV_STARTS_AT_TOP
-    return pos.z / pos.w;
+	return pos.z / pos.w;
 #else
-    return (pos.z / pos.w) * 0.5 + 0.5;   
+	return (pos.z / pos.w) * 0.5 + 0.5;
 #endif
 }
 
