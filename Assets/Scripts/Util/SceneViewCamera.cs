@@ -1,6 +1,4 @@
-﻿using UnityEditor;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// GameビューにてSceneビューのようなカメラの動きをマウス操作によって実現する
@@ -9,7 +7,7 @@ using UnityEngine;
 public class SceneViewCamera : MonoBehaviour
 {
   [SerializeField, Tooltip("左シフトを押している時のみマウス操作を可能にする")]
-  private bool requireLeftShiftDown;
+  private bool requireLeftShiftDown = false;
 
   [SerializeField, Range(0.1f, 10f)]
   private float wheelSpeed = 1f;
