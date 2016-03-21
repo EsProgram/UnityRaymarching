@@ -100,10 +100,6 @@ Material:
         second: 0.5
       data:
         first:
-          name: _MAP
-        second: 0
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -138,6 +134,10 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _MAP
+        second: 0
     m_Colors:
       data:
         first:
@@ -147,3 +147,15 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _Emission
+        second: {r: 0.2352941, g: 0.03407708, b: 0, a: 1}
+      data:
+        first:
+          name: _Diffuse
+        second: {r: 0.625, g: 0.8293104, b: 1, a: 0.459}
+      data:
+        first:
+          name: _Specular
+        second: {r: 0, g: 0.08965492, b: 1, a: 0.391}

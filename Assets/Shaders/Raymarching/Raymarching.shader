@@ -3,6 +3,9 @@
 	Properties{
 		[KeywordEnum(NONE,KALEIDOSCOPIC_IFS,TGLAD_FORMULA,HARTVERDRAHTET,PSEUDO_KLEINIAN,PSEUDO_KNIGHTYAN)]
 		_MAP("Distacne Func", Float) = 0
+		_Diffuse("Diffuse (RGB) Occlusion (A)", COLOR) = (0.5, 0.5, 0.5, 1)
+		_Specular("Specular (RGB) Smoothness (A)", COLOR) = (0, 0, 0, 0)
+		_Emission("Emission (RGB) NoUse(A)",COLOR) = (0.1 ,0.1 ,0.1 ,1)
 	}
 	SubShader
 	{
@@ -50,6 +53,12 @@
 				float depth : SV_Depth;
 			};
 
+
+			float4 _Diffuse;
+			float4 _Specular;
+			float4 _Emission;
+
+
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -91,9 +100,9 @@
 
 				//MRTによるG-Buffer出力(Depth,Normal以外は適当)
 				gbuffer o;
-				o.diffuse = float4(0.5, 0.5, 0.5, 0.5);
-				o.specular = float4(1, 1, 1, 1);
-				o.emission = float4(0.1, 0.1, 0.1, 1);
+				o.diffuse = _Diffuse;
+				o.specular = _Specular;
+				o.emission = _Emission;;
 				o.depth = depth;
 				o.normal = float4(normal, 1);
 				return o;
