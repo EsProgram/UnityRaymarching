@@ -6,6 +6,8 @@
 		_Diffuse("Diffuse (RGB) Occlusion (A)", COLOR) = (0.5, 0.5, 0.5, 1)
 		_Specular("Specular (RGB) Smoothness (A)", COLOR) = (0, 0, 0, 0)
 		_Emission("Emission (RGB) NoUse(A)",COLOR) = (0.1 ,0.1 ,0.1 ,1)
+
+		_DepthFade("Depth Fade", Range(0,20)) = 1
 	}
 	SubShader
 	{
@@ -58,6 +60,7 @@
 			float4 _Specular;
 			float4 _Emission;
 
+			float _DepthFade;
 
 			v2f vert(appdata v)
 			{
@@ -97,6 +100,17 @@
 				//レイがヒットした位置からデプスと法線を計算
 				float depth = compute_depth(mul(UNITY_MATRIX_VP, float4(pos, 1)));
 				float3 normal = compute_normal(pos);
+
+
+				//Depthの値によるアニメーションを追加
+				float linear_depth = LinearEyeDepth(depth);
+				float diff = linear_depth - _DepthFade;
+				clip(diff);
+				if (diff < 0.3) {
+					_Diffuse = float4(10, 10, 10, 1) * diff;
+					_Specular = float4(10, 10, 10, 1) * diff;
+					_Emission = float4(10, 10, 10, 1) * diff;
+				}
 
 				//MRTによるG-Buffer出力(Depth,Normal以外は適当)
 				gbuffer o;

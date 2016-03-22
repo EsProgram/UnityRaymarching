@@ -315,13 +315,13 @@ float map(float3 p)
 #elif _MAP_PSEUDO_KNIGHTYAN
 	return pseudo_knightyan(p);
 #else
-	const float SPAN = 0.8;
+	const float SPAN = 0.5;
 	const float SIZE = 0.1;
 
-	float main_box = repeat_round_box_rotate_around_own(p, SIZE * 0.7, 0.02, radians(90 * _Time.y), float3(1, 1, 1), SPAN);
+	float main_box = repeat_round_box_rotate_around_own(p, (SIZE * 0.7) * abs(_CosTime.z), 0.02, radians(90 * _Time.y), float3(1, 1, 1), SPAN);
 	float op_prim = repeat_sphere(p, SIZE * 0.7, SPAN);
-	float t1 = repeat_torus_rotate_around_own(p, float2(SIZE*1.13, 0.008), radians(90 * _Time.y), float3(1, -1, 1), SPAN);
-	float t2 = repeat_torus_rotate_around_own(p, float2(SIZE, 0.008), radians(90 + 90 * _Time.y), float3(-1, 1, -1), SPAN);
+	float t1 = repeat_torus_rotate_around_own(p, abs(_CosTime.z) * float2(SIZE*1.13, 0.008), radians(90 * _Time.y), float3(1, -1, 1), SPAN);
+	float t2 = repeat_torus_rotate_around_own(p, abs(_CosTime.z) * float2(SIZE, 0.008), radians(90 + 90 * _Time.y), float3(-1, 1, -1), SPAN);
 
 	return op_union(op_union(op_union(op_substract(op_prim, main_box), t1), t2), pseudo_knightyan(p));
 	//return main_box;

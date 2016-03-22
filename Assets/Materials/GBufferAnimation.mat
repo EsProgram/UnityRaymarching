@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Raymarching
-  m_Shader: {fileID: 4800000, guid: 949fc4284ea174a3286344866c84a915, type: 3}
-  m_ShaderKeywords: _MAP_NONE
+  m_Name: GBufferAnimation
+  m_Shader: {fileID: 4800000, guid: 599732daee1bb71489617cdadba595b6, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
   stringTagMap: {}
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -78,13 +78,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MainTexture
-        second:
-          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -136,11 +129,15 @@ Material:
         second: 0
       data:
         first:
-          name: _MAP
+          name: _DepthFade
         second: 0
       data:
         first:
-          name: _DepthFade
+          name: _Strength
+        second: 0
+      data:
+        first:
+          name: _ColorFade
         second: 0
     m_Colors:
       data:
@@ -151,15 +148,3 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _Emission
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
-          name: _Diffuse
-        second: {r: 0, g: 0.25517225, b: 1, a: 0.459}
-      data:
-        first:
-          name: _Specular
-        second: {r: 0, g: 0.08965492, b: 1, a: 0.822}
