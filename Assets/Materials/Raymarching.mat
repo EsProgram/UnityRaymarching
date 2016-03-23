@@ -142,7 +142,19 @@ Material:
         first:
           name: _DepthFade
         second: 0
+      data:
+        first:
+          name: _ScreenSpaceRaymarch
+        second: 0
+      data:
+        first:
+          name: _ObjectSpaceRaymarch
+        second: 0
     m_Colors:
+      data:
+        first:
+          name: _Scale
+        second: {r: 1, g: 1, b: 1, a: 0}
       data:
         first:
           name: _EmissionColor
@@ -163,3 +175,11 @@ Material:
         first:
           name: _Specular
         second: {r: 0, g: 0.08965492, b: 1, a: 0.822}
+      data:
+        first:
+          name: _Position
+        second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
+          name: _Rotation
+        second: {r: 0, g: 1, b: 0, a: 0}

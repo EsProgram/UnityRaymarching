@@ -298,23 +298,7 @@ float repeat_torus_rotate_around_own(float3 p, float2 radius, float angle, float
 	return torus(p, radius);
 }
 
-////////////////////////////////////////////////////////////////////////////
-//                                   Map                                  //
-////////////////////////////////////////////////////////////////////////////
-
-float map(float3 p)
-{
-#ifdef _MAP_KALEIDOSCOPIC_IFS
-	return kaleidoscopic_IFS(p);
-#elif _MAP_TGLAD_FORMULA
-	return tglad_formula(p);
-#elif _MAP_HARTVERDRAHTET
-	return hartverdrahtet(p);
-#elif _MAP_PSEUDO_KLEINIAN
-	return pseudo_kleinian(p);
-#elif _MAP_PSEUDO_KNIGHTYAN
-	return pseudo_knightyan(p);
-#else
+float additive_pseudo_knightyan(float3 p) {
 	const float SPAN = 0.5;
 	const float SIZE = 0.1;
 
@@ -324,18 +308,5 @@ float map(float3 p)
 	float t2 = repeat_torus_rotate_around_own(p, abs(_CosTime.z) * float2(SIZE, 0.008), radians(90 + 90 * _Time.y), float3(-1, 1, -1), SPAN);
 
 	return op_union(op_union(op_union(op_substract(op_prim, main_box), t1), t2), pseudo_knightyan(p));
-	//return main_box;
-	//return op_box;
-
-#endif
 }
-
-//空間内の点の位置を受け取り, 図形と点との最短距離を返す
-//この関数の値が0となる点の集合が図形の表面となる。
-//つまり0に近い値を返した場合は描画されることになる
-float distance_func(float3 pos)
-{
-	return map(pos);
-}
-
 #endif //DISTANCE_FUNCTION

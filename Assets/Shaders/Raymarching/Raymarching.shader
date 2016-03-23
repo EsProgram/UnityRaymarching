@@ -7,14 +7,94 @@
 		_Specular("Specular (RGB) Smoothness (A)", COLOR) = (0, 0, 0, 0)
 		_Emission("Emission (RGB) NoUse(A)",COLOR) = (0.1 ,0.1 ,0.1 ,1)
 
-		_DepthFade("Depth Fade", Range(0,20)) = 1
+		[Toggle(OBJECT_SPACE_RAYMARCH)]
+		_ObjectSpaceRaymarch("Object Space Raymarch", Float) = 0
 	}
+
+CGINCLUDE
+
+#include "Raymarching.cginc"
+
+float4 _Diffuse;
+float4 _Specular;
+float4 _Emission;
+
+struct appdata
+{
+	float4 vertex : POSITION;
+};
+
+struct v2f
+{
+	float4 vertex : SV_POSITION;
+	float4 screen : TEXCOORD0;
+};
+
+//MRTにより出力するG-Buffer
+struct gbuffer
+{
+	half4 diffuse : SV_Target0; // rgb: diffuse,  a: occlusion
+	half4 specular : SV_Target1; // rgb: specular, a: smoothness
+	half4 normal : SV_Target2; // rgb: normal,   a: unused
+	half4 emission : SV_Target3; // rgb: emission, a: unused
+	float depth : SV_Depth;
+};
+
+v2f vert(appdata v)
+{
+	v2f o;
+#if OBJECT_SPACE_RAYMARCH
+	o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+#else
+	o.vertex = v.vertex;
+#endif
+	//座標変換の必要なし(Command BufferでMeshをそのまま描画する)
+	//フラグメントシェーダーではTEXCOORDはラスタライズにより各ピクセルへの位置を取得できる
+	o.screen = o.vertex;
+	return o;
+}
+
+gbuffer frag(v2f i)
+{
+	//wは射影空間（視錐台空間）にある頂点座標をそれで割ることにより
+	//「頂点をスクリーンに投影するための立方体の領域（-1≦x≦1、-1≦y≦1そして0≦z≦1）に納める」
+	//オブジェクトスペースでのレイマーチで描画の破綻を防ぐ
+	i.screen.xy /= i.screen.w;
+
+	int trial_count;
+	float ray_len;
+	float3 ray_pos;
+	float last_dist;
+	raymarching(i.screen.xy, 64, ray_pos, trial_count, ray_len, last_dist);
+
+
+	//レイがヒットしなかった場合はclip
+	clip(-last_dist + RAY_HIT_DISTANCE);
+
+	//レイがヒットした位置からデプスと法線を計算
+	float depth = compute_depth(mul(UNITY_MATRIX_VP, float4(ray_pos, 1)));
+	float3 normal = compute_normal(ray_pos);
+
+	//MRTによるG-Buffer出力(Depth,Normal以外は適当)
+	gbuffer o;
+	o.diffuse = _Diffuse;
+	o.specular = _Specular;
+	o.emission = _Emission;;
+	o.depth = depth;
+	o.normal = float4(normal, 1);
+	return o;
+}
+
+
+ENDCG
+
+
 	SubShader
 	{
+		Cull Off
 		Pass
 		{
 			Tags { "LightMode" = "Deferred" }
-			Cull Off
 			//G-Bufferへの描画はStencil を有効にして7bit目を立てる(128を足す)。
 			//Stencilの7bit目が立っていないピクセルはライティングされない。
 			//なので常にステンシルテストに合格させ、128で上書きする。
@@ -27,100 +107,15 @@
 
 			CGPROGRAM
 
-#pragma shader_feature _ _MAP_KALEIDOSCOPIC_IFS _MAP_TGLAD_FORMULA _MAP_HARTVERDRAHTET _MAP_PSEUDO_KLEINIAN _MAP_PSEUDO_KNIGHTYAN
+#pragma enable_d3d11_debug_symbols
 #pragma vertex vert
 #pragma fragment frag
 #pragma target 3.0
 
-#include "Raymarching.cginc"
-
-			struct appdata
-			{
-				float4 vertex : POSITION;
-			};
-
-			struct v2f
-			{
-				float4 vertex : SV_POSITION;
-				float4 screen : TEXCOORD0;
-			};
-
-			//MRTにより出力するG-Buffer
-			struct gbuffer
-			{
-				half4 diffuse : SV_Target0; // rgb: diffuse,  a: occlusion
-				half4 specular : SV_Target1; // rgb: specular, a: smoothness
-				half4 normal : SV_Target2; // rgb: normal,   a: unused
-				half4 emission : SV_Target3; // rgb: emission, a: unused
-				float depth : SV_Depth;
-			};
+#pragma multi_compile _ OBJECT_SPACE_RAYMARCH
+#pragma shader_feature _ _MAP_KALEIDOSCOPIC_IFS _MAP_TGLAD_FORMULA _MAP_HARTVERDRAHTET _MAP_PSEUDO_KLEINIAN _MAP_PSEUDO_KNIGHTYAN
 
 
-			float4 _Diffuse;
-			float4 _Specular;
-			float4 _Emission;
-
-			float _DepthFade;
-
-			v2f vert(appdata v)
-			{
-				v2f o;
-				o.vertex = v.vertex;
-				//座標変換の必要なし(Command BufferでMeshをそのまま描画する)
-				//フラグメントシェーダーではTEXCOORDはラスタライズにより各ピクセルへの位置を取得できる
-				o.screen = v.vertex;
-				return o;
-			}
-
-			gbuffer frag(v2f i)
-			{
-				const float HIT_DISTANCE = 0.001;
-
-				float3 rayDir = compute_ray_dir(i.screen);//ピクセル位置とカメラからレイを飛ばす方向ベクトルを算出
-				float3 camPos = get_cam_pos();//カメラ位置の取得
-				float maxDist = get_cam_visibl_len();//カメラの最大描画範囲取得
-
-				float distance = 0;//距離関数から返却される図形と点との最短距離
-				float len = 0;//点(Ray)の進んだ長さ
-				float3 pos = camPos + _ProjectionParams.y * rayDir;//点(Ray)開始位置
-
-				//レイを飛ばす処理
-				for (int count = 0; count < 128; ++count) {
-					distance = distance_func(pos);
-					len += distance;
-					pos += rayDir * distance;
-					//レイがヒットした || レイの長さが描画範囲を超えた
-					if (distance < HIT_DISTANCE || len > maxDist)
-						break;
-				}
-
-				//レイがヒットしなかった場合はclip
-				clip(-distance + HIT_DISTANCE);
-
-				//レイがヒットした位置からデプスと法線を計算
-				float depth = compute_depth(mul(UNITY_MATRIX_VP, float4(pos, 1)));
-				float3 normal = compute_normal(pos);
-
-
-				//Depthの値によるアニメーションを追加
-				float linear_depth = LinearEyeDepth(depth);
-				float diff = linear_depth - _DepthFade;
-				clip(diff);
-				if (diff < 0.3) {
-					_Diffuse = float4(10, 10, 10, 1) * diff;
-					_Specular = float4(10, 10, 10, 1) * diff;
-					_Emission = float4(10, 10, 10, 1) * diff;
-				}
-
-				//MRTによるG-Buffer出力(Depth,Normal以外は適当)
-				gbuffer o;
-				o.diffuse = _Diffuse;
-				o.specular = _Specular;
-				o.emission = _Emission;;
-				o.depth = depth;
-				o.normal = float4(normal, 1);
-				return o;
-			}
 			ENDCG
 		}
 	}
