@@ -286,20 +286,18 @@ float repeat_torus(float3 p, float2 radius, float3 repeat_span) {
 
 float repeat_round_box_rotate_around_own(float3 p, float box_size, float box_round, float angle, float3 axis, float3 repeat_span) {
 	p = repeat(p, repeat_span);
-	p = mul(UNITY_MATRIX_MV, p);
 	p = rotate(p, angle, axis);
 	return round_box(p, box_size, box_round);
 }
 
 float repeat_torus_rotate_around_own(float3 p, float2 radius, float angle, float3 axis, float3 repeat_span) {
 	p = repeat(p, repeat_span);
-	p = mul(UNITY_MATRIX_MV, p);
 	p = rotate(p, angle, axis);
 	return torus(p, radius);
 }
 
 float additive_pseudo_knightyan(float3 p) {
-	const float SPAN = 0.5;
+	const float SPAN = 0.7;
 	const float SIZE = 0.1;
 
 	float main_box = repeat_round_box_rotate_around_own(p, (SIZE * 0.7) * abs(_CosTime.z), 0.02, radians(90 * _Time.y), float3(1, 1, 1), SPAN);

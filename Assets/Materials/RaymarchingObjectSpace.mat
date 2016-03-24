@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Raymarching
+  m_Name: RaymarchingObjectSpace
   m_Shader: {fileID: 4800000, guid: 949fc4284ea174a3286344866c84a915, type: 3}
-  m_ShaderKeywords: _MAP_NONE
+  m_ShaderKeywords: OBJECT_SPACE_RAYMARCH _MAP_CUBE
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
   stringTagMap: {}
@@ -136,12 +136,12 @@ Material:
         second: 0
       data:
         first:
-          name: _MAP
+          name: _DepthFade
         second: 0
       data:
         first:
-          name: _DepthFade
-        second: 0
+          name: _MAP
+        second: 6
       data:
         first:
           name: _ScreenSpaceRaymarch
@@ -149,12 +149,12 @@ Material:
       data:
         first:
           name: _ObjectSpaceRaymarch
-        second: 0
+        second: 1
     m_Colors:
       data:
         first:
           name: _Scale
-        second: {r: 1, g: 1, b: 1, a: 0}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _EmissionColor
@@ -166,15 +166,15 @@ Material:
       data:
         first:
           name: _Emission
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
       data:
         first:
           name: _Diffuse
-        second: {r: 0, g: 0.25517225, b: 1, a: 0.459}
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
       data:
         first:
           name: _Specular
-        second: {r: 0, g: 0.08965492, b: 1, a: 0.822}
+        second: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
       data:
         first:
           name: _Position
@@ -182,4 +182,4 @@ Material:
       data:
         first:
           name: _Rotation
-        second: {r: 0, g: 1, b: 0, a: 0}
+        second: {r: 0, g: 0, b: 0, a: 0}
