@@ -150,6 +150,10 @@ Material:
         first:
           name: _ObjectSpaceRaymarch
         second: 1
+      data:
+        first:
+          name: _RayTrace
+        second: 0
     m_Colors:
       data:
         first:

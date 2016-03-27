@@ -1,10 +1,6 @@
 ﻿#ifndef RAYMARCH_STRUCT
 #define RAYMARCH_STRUCT
 
-#include "UnityCG.cginc"
-#include "DistanceFunction.cginc"
-#include "CameraInfomation.cginc"
-
 struct appdata
 {
 	float4 vertex : POSITION;

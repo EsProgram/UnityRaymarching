@@ -28,8 +28,7 @@ float4 _Diffuse;
 float4 _Specular;
 float4 _Emission;
 
-#include "DistanceFunction.cginc"
-#include "RaymarchFoundation.cginc"
+#include "Assets/CGINC/Raymarch/RaymarchFoundation.cginc"
 
 ENDCG
 

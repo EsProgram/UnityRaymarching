@@ -1,6 +1,9 @@
-#include "RaymarchStructure.cginc"
-#include "DistanceFunction.cginc"
-#include "CameraInfomation.cginc"
+#ifndef RAYMARCH_FOUNDATION
+#define RAYMARCH_FOUNDATION
+
+#include "Assets/CGINC/Util/CameraInfomation.cginc"
+#include "Assets/CGINC/Raymarch/RaymarchStructure.cginc"
+#include "Assets/CGINC/Raymarch/DistanceFunction/DistanceFunction.cginc"
 
 #ifndef RAY_HIT_DISTANCE
 	#define RAY_HIT_DISTANCE 0.001
@@ -163,3 +166,5 @@ gbuffer raymarch_frag(v2f i)
 
 	return gb_out;
 }
+
+#endif //RAYMARCH_FOUNDATION
