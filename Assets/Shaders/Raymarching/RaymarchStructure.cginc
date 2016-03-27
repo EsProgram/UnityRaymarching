@@ -5,8 +5,6 @@
 #include "DistanceFunction.cginc"
 #include "CameraInfomation.cginc"
 
-#define RAY_HIT_DISTANCE 0.001
-
 struct appdata
 {
 	float4 vertex : POSITION;
@@ -43,4 +41,24 @@ struct transform
 	float3 scale;
 };
 
+gbuffer init_gbuffer(half4 diffuse, half4 specular, half3 normal, half4 emission, float depth)
+{
+	gbuffer gb;
+	gb.diffuse = diffuse;
+	gb.specular = specular;
+	gb.normal = half4(normal, 1);
+	gb.emission = emission;
+	gb.depth = depth;
+
+	return gb;
+}
+
+transform init_transform(float3 pos, float3 rot, float3 scl)
+{
+	transform tr;
+	tr.position = pos;
+	tr.rotation = rot;
+	tr.scale = scl;
+	return tr;
+}
 #endif //RAYMARCH_STRUCT
