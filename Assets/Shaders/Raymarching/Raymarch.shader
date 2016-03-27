@@ -18,10 +18,15 @@ CGINCLUDE
 
 #define CUSTOM_DISTANCE_FUNCTION(p) pseudo_knightyan(p)
 #define CUSTOM_TRANSFORM(p, r, s) init_transform(_Position, _Rotation, _Scale)
+#define CUSTOM_GBUFFER_OUTPUT(diff, spec, norm, emit, dep) init_gbuffer(_Diffuse, _Specular, norm, _Emission, dep)
 
 float4 _Position;
 float4 _Rotation;
 float4 _Scale;
+
+float4 _Diffuse;
+float4 _Specular;
+float4 _Emission;
 
 #include "DistanceFunction.cginc"
 #include "RaymarchFoundation.cginc"

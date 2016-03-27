@@ -3,20 +3,28 @@
 #include "CameraInfomation.cginc"
 
 #ifndef RAY_HIT_DISTANCE
-#define RAY_HIT_DISTANCE 0.001
+	#define RAY_HIT_DISTANCE 0.001
 #endif
 
 //使用側でDistanceFunctionを変更したい場合に
 //CUSTOM_DISTANCE_FUNCTIONを定義する
 #if !defined(CUSTOM_DISTANCE_FUNCTION)
-#define CUSTOM_DISTANCE_FUNCTION(p) __default_distance_func(p)
+	#define CUSTOM_DISTANCE_FUNCTION(p) __default_distance_func(p)
 #endif //CUSTOM_DISTANCE_FUNCTION
 
 //使用側でTransformを変更したい場合に
 //CUSTOM_TRANSFORMを定義する
+//transformを返すマクロを定義する
 #if !defined(CUSTOM_TRANSFORM)
-#define CUSTOM_TRANSFORM(p, r, s) init_transform(p, r, s)
+	#define CUSTOM_TRANSFORM(p, r, s) init_transform(p, r, s)
 #endif //CUSTOM_TRANSFORM
+
+//使用側でGBufferへの出力を変更したい場合に
+//CUSTOM_GBUFFER_OUTPUTを定義する
+//gbufferを返すマクロを定義する
+#if !defined(CUSTOM_GBUFFER_OUTPUT)
+	#define CUSTOM_GBUFFER_OUTPUT(diff, spec, norm, emit , dep) init_gbuffer(diff, spec, norm, emit, dep)
+#endif // CUSTOM_GBUFFER_OUTPUT
 
 //空間内の点の位置を受け取り, 図形と点との最短距離を返す
 //この関数の値が0となる点の集合が図形の表面となる。
@@ -151,7 +159,7 @@ gbuffer raymarch_frag(v2f i)
 
 	//MRTによるG-Buffer出力(Depth,Normal以外は適当)
 	gbuffer gb_out;
-	gb_out = init_gbuffer(0.5, 0.5, float4(normal, 1), 0, depth);
+	gb_out = CUSTOM_GBUFFER_OUTPUT(0.5, 0.5, normal, 0.5, depth);
 
 	return gb_out;
 }
