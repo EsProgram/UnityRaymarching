@@ -1,3 +1,9 @@
+/**********************************************
+	Raymarchで必要な標準機能を提供します
+	オブジェクトスペースでのRaymarchを行う場合は
+	OBJECT_SPACE_RAYMARCHキーワードを定義します
+***********************************************/
+
 #ifndef RAYMARCH_FOUNDATION
 #define RAYMARCH_FOUNDATION
 
