@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class ImageEffect : MonoBehaviour
 {
   [SerializeField]

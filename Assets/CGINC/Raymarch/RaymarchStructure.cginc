@@ -1,12 +1,12 @@
 ﻿#ifndef RAYMARCH_STRUCT
 #define RAYMARCH_STRUCT
 
-struct appdata
+struct raymarch_appdata
 {
 	float4 vertex : POSITION;
 };
 
-struct v2f
+struct raymarch_v2f
 {
 	float4 vertex : SV_POSITION;
 	float4 screen : TEXCOORD0;

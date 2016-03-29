@@ -43,28 +43,6 @@ float __default_distance_func(float3 pos)
 	return box(pos, 1);
 }
 
-//レイの進むべき方向を算出する
-//カメラ -> レンダリングするピクセル
-float3 compute_ray_dir(float2 screen)
-{
-	//UNITY_UV_START_AT_TOPはV値のトップ位置
-	//Direct3Dでは1、 OpenGL系では0
-#if UNITY_UV_STARTS_AT_TOP
-	//Direct3Dの場合、頂点をy軸対称に反転させることで凌ぐ
-	screen.y *= -1.0;
-#endif
-	//_ScreenParamsのxはレンダリングターゲットのピクセルの幅、yはピクセルの高さ
-	screen.x *= _ScreenParams.x / _ScreenParams.y;
-
-	//カメラの情報とピクセル位置から カメラ -> ピクセル のレイの方向ベクトルを求める
-	float3 camDir = get_cam_fwd();
-	float3 camUp = get_cam_up();
-	float3 camSide = get_cam_right();
-	float  focalLen = get_cam_focal_len();
-
-	return normalize((camSide * screen.x) + (camUp * screen.y) + (camDir * focalLen));
-}
-
 //モデルの位置、回転、スケール決定
 //(ObjectSpaceの場合、PositionとRotationはオブジェクトのTransformと同期させたほうがわかりやすそう？)
 float3 localize(float3 p, transform tr)
@@ -116,7 +94,7 @@ raymarch_out raymarch(float2 pos, transform tr, const int trial_num)
 {
 	raymarch_out o;
 
-	float3 ray_dir = compute_ray_dir(pos);
+	float3 ray_dir = camera_to_screen_dir(pos);
 	float3 cam_pos = get_cam_pos();
 	float max_ray_dist = get_cam_visibl_len();
 
@@ -133,9 +111,9 @@ raymarch_out raymarch(float2 pos, transform tr, const int trial_num)
 	return o;
 }
 
-v2f raymarch_vert(appdata v)
+raymarch_v2f raymarch_vert(raymarch_appdata v)
 {
-	v2f o;
+	raymarch_v2f o;
 #if OBJECT_SPACE_RAYMARCH
 	o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 #else
@@ -147,7 +125,7 @@ v2f raymarch_vert(appdata v)
 	return o;
 }
 
-gbuffer raymarch_frag(v2f i)
+gbuffer raymarch_frag(raymarch_v2f i)
 {
 	//wは射影空間（視錐台空間）にある頂点座標をそれで割ることにより
 	//「頂点をスクリーンに投影するための立方体の領域（-1≦x≦1、-1≦y≦1そして0≦z≦1）に納める」

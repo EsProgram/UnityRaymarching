@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Plane
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_Name: RaymarchingObjectSpace
+  m_Shader: {fileID: 4800000, guid: 949fc4284ea174a3286344866c84a915, type: 3}
+  m_ShaderKeywords: OBJECT_SPACE_RAYMARCH _MAP_CUBE
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -78,6 +78,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MainTexture
+        second:
+          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -127,7 +134,31 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _DepthFade
+        second: 0
+      data:
+        first:
+          name: _MAP
+        second: 6
+      data:
+        first:
+          name: _ScreenSpaceRaymarch
+        second: 0
+      data:
+        first:
+          name: _ObjectSpaceRaymarch
+        second: 1
+      data:
+        first:
+          name: _RayTrace
+        second: 0
     m_Colors:
+      data:
+        first:
+          name: _Scale
+        second: {r: 2, g: 2, b: 2, a: 1}
       data:
         first:
           name: _EmissionColor
@@ -135,4 +166,24 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.3455882, g: 0.3455882, b: 0.3455882, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _Emission
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      data:
+        first:
+          name: _Diffuse
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      data:
+        first:
+          name: _Specular
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      data:
+        first:
+          name: _Position
+        second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
+          name: _Rotation
+        second: {r: 0, g: 90.08, b: 0, a: 0}

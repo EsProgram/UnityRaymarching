@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: RaymarchingObjectSpace
-  m_Shader: {fileID: 4800000, guid: 949fc4284ea174a3286344866c84a915, type: 3}
-  m_ShaderKeywords: OBJECT_SPACE_RAYMARCH _MAP_CUBE
+  m_Name: Refrection
+  m_Shader: {fileID: 4800000, guid: 665e53636766049439a844fbafb75c66, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
   stringTagMap: {}
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -78,13 +78,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MainTexture
-        second:
-          m_Texture: {fileID: 2800000, guid: 529239097d02f9f42b0ddd436c6fcbb0, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -136,29 +129,21 @@ Material:
         second: 0
       data:
         first:
-          name: _DepthFade
-        second: 0
+          name: _Distance
+        second: 0.34
       data:
         first:
-          name: _MAP
-        second: 6
+          name: _Intensity
+        second: 0.356
       data:
         first:
-          name: _ScreenSpaceRaymarch
-        second: 0
+          name: _RefrectDepth
+        second: 3.22
       data:
         first:
-          name: _ObjectSpaceRaymarch
-        second: 1
-      data:
-        first:
-          name: _RayTrace
-        second: 0
+          name: _Coef
+        second: 0.8
     m_Colors:
-      data:
-        first:
-          name: _Scale
-        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _EmissionColor
@@ -167,23 +152,3 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _Emission
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-      data:
-        first:
-          name: _Diffuse
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-      data:
-        first:
-          name: _Specular
-        second: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
-      data:
-        first:
-          name: _Position
-        second: {r: 0, g: 0, b: 0, a: 0}
-      data:
-        first:
-          name: _Rotation
-        second: {r: 0, g: 0, b: 0, a: 0}

@@ -16,7 +16,8 @@
 
 CGINCLUDE
 
-#define CUSTOM_DISTANCE_FUNCTION(p) pseudo_knightyan(p)
+//#define CUSTOM_DISTANCE_FUNCTION(p) sphere(p, 1)
+#define CUSTOM_DISTANCE_FUNCTION(p) additive_pseudo_knightyan(p)
 #define CUSTOM_TRANSFORM(p, r, s) init_transform(_Position, _Rotation, _Scale)
 #define CUSTOM_GBUFFER_OUTPUT(diff, spec, norm, emit, dep) init_gbuffer(_Diffuse, _Specular, norm, _Emission, dep)
 
