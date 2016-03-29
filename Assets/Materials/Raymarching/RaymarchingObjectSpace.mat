@@ -170,20 +170,20 @@ Material:
       data:
         first:
           name: _Emission
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Diffuse
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+        second: {r: 0.7058823, g: 0.7058823, b: 0.7058823, a: 1}
       data:
         first:
           name: _Specular
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Position
-        second: {r: 0, g: 0, b: 0, a: 0}
+        second: {r: 0.95, g: -2.7, b: 7.22, a: 0}
       data:
         first:
           name: _Rotation
-        second: {r: 0, g: 90.08, b: 0, a: 0}
+        second: {r: -2.35, g: 138.8, b: 2.8, a: 0}

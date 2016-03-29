@@ -130,7 +130,7 @@ Material:
       data:
         first:
           name: _Diff
-        second: 0
+        second: 1
     m_Colors:
       data:
         first:
